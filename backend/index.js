@@ -5,12 +5,11 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const crypto = require('crypto');
 
-// MongoDB connection
+// MongoDB connection utility
 const connectDB = require('./config/db');
 
-// Create express app
+// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,9 +20,12 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Sample route
+// Routes placeholder (you’ll add routes like userRoutes here soon)
+// Example: app.use('/api/users', require('./routes/userRoutes'));
+
+// Root route
 app.get('/', (req, res) => {
-  res.send('Vendor Supply Platform Backend Running!');
+  res.send('🚀 Vendor Supply Platform Backend Running!');
 });
 
 // Start server
