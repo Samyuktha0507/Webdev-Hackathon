@@ -1,0 +1,111 @@
+/* src/pages/DeliveryPartnerPage.module.css */
+.pageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+  padding: 2rem;
+  position: relative;
+}
+
+.backToHome {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+.formCard {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.cardHeader h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--dark-blue);
+}
+
+.cardHeader p {
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.regForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputGroup svg {
+  position: absolute;
+  left: 15px;
+  color: #aaa;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 2.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.inputGroup input:focus {
+  outline: none;
+  border-color: #2a9d8f;
+}
+
+.submitBtn {
+  background-color: #2a9d8f;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitBtn:hover {
+  background-color: #268a7e;
+}
+
+.successMessage {
+  padding: 2rem 0;
+}
+
+.successIcon {
+  font-size: 4rem;
+  color: #2a9d8f;
+  margin-bottom: 1rem;
+}
+
+.successMessage h2 {
+  color: var(--dark-blue);
+}
+
+.successMessage p {
+  color: #666;
+}

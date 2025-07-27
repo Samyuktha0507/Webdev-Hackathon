@@ -1,0 +1,274 @@
+/* src/pages/HomePage.module.css */
+
+.pageWrapper {
+  /* This ensures the page itself handles the smooth scrolling */
+  scroll-behavior: smooth;
+}
+
+.homeContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eaf5e9, #c8e6c9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative; /* Needed for the absolute navbar */
+}
+
+.navbar {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-green);
+}
+
+.navLinks a {
+  margin: 0 1rem;
+  font-weight: 500;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.navLinks a:hover {
+  color: var(--primary-green);
+}
+
+.mainContent {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.mainContent h1 {
+  font-size: 3.5rem;
+  color: var(--dark-blue);
+  margin-bottom: 1rem;
+}
+
+.highlight {
+  color: var(--primary-yellow);
+}
+
+.mainContent > p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+  color: var(--text-color);
+}
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-yellow);
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  margin-bottom: 1.5rem;
+  color: #666;
+  flex-grow: 1;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+  width: 100%;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.vendorBtn {
+  background-color: var(--primary-yellow);
+  color: var(--dark-blue);
+}
+
+.producerBtn {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+.deliveryBtn {
+  background-color: #2a9d8f;
+  color: white;
+}
+
+/* --- New Styles for Info Sections --- */
+
+.infoSection {
+  padding: 5rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  color: var(--dark-blue);
+  margin-bottom: 2rem;
+}
+
+.sectionText {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.missionTitle {
+  font-size: 1.5rem;
+  color: var(--primary-green);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.missionText {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #333;
+}
+
+.featuresSection {
+  background-color: #f9f9f9;
+  max-width: 100%; /* Allow this section to be full-width */
+  padding: 5rem 2rem;
+}
+
+.featuresSection .sectionTitle, .featuresSection .subHeader {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subHeader {
+  font-size: 1.8rem;
+  color: var(--primary-green);
+  margin-bottom: 2rem;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.featureItem {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.featureItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.featureIcon {
+  font-size: 2.5rem;
+  color: var(--primary-yellow);
+  margin-bottom: 1rem;
+}
+
+.featureItem h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.featureItem p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.contactSection {
+  background-color: var(--dark-blue);
+  color: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.contactSection .sectionTitle {
+  color: #fff;
+}
+
+.contactInfo {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.contactItem a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.contactItem a:hover {
+  text-decoration: underline;
+}
+
+.footerText {
+  margin-top: 2rem;
+  border-top: 1px solid #4a5a6a;
+  padding-top: 2rem;
+  color: #ccc;
+  font-size: 0.9rem;
+}
