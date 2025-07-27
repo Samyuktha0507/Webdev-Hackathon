@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiggy-like Payment - Razorpay Integration</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 20px 24px;
+            text-align: center;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .payment-options {
+            padding: 24px;
+        }
+        .option-card {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 12px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .option-card:hover {
+            border-color: #4CAF50; /* Green */
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.1); /* Green shadow */
+            transform: translateY(-2px);
+        }
+        .option-card.selected {
+            border-color: #4CAF50; /* Green */
+            background-color: #e8f5e9; /* Lighter green */
+        }
+        .option-icon {
+            font-size: 28px;
+            margin-right: 16px;
+            color: #4CAF50; /* Green */
+        }
+        .option-text {
+            flex-grow: 1;
+        }
+        .option-text h3 {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .option-text p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .pay-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            margin-top: 20px;
+        }
+        .pay-button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+        .pay-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 1000;
+            max-width: 350px;
+            width: 90%;
+            display: none; /* Hidden by default */
+        }
+        .message-box.show {
+            display: block;
+        }
+        .message-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .message-box p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .message-box button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .message-box button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none; /* Hidden by default */
+        }
+        .overlay.show {
+            display: block;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #4CAF50; /* Green */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+            display: none; /* Hidden by default */
+        }
+        .pay-button.loading .loading-spinner {
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 class="text-2xl font-bold">Choose Payment Method</h2>
+        </div>
+        <div class="payment-options">
+            <!-- GPay Option -->
+            <div id="gpay-card" class="option-card" data-method="gpay">
+                <span class="option-icon">💳</span> <!-- Using a card emoji for GPay for simplicity -->
+                <div class="option-text">
+                    <h3>Google Pay</h3>
+                    <p>Pay securely with your Google Pay account.</p>
+                </div>
+            </div>
+
+            <!-- Card Option -->
+            <div id="card-card" class="option-card" data-method="card">
+                <span class="option-icon">💳</span>
+                <div class="option-text">
+                    <h3>Credit/Debit Card</h3>
+                    <p>Visa, MasterCard, Rupay, Amex</p>
+                </div>
+            </div>
+
+            <!-- Cash Option -->
+            <div id="cash-card" class="option-card" data-method="cash">
+                <span class="option-icon">💵</span>
+                <div class="option-text">
+                    <h3>Cash on Delivery</h3>
+                    <p>Pay with cash when your order arrives.</p>
+                </div>
+            </div>
+
+            <button id="pay-button" class="pay-button" disabled>
+                Pay Now
+                <span id="loading-spinner" class="loading-spinner"></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Message Box for alerts -->
+    <div id="message-overlay" class="overlay"></div>
+    <div id="message-box" class="message-box">
+        <h3 id="message-title"></h3>
+        <p id="message-content"></p>
+        <button id="message-ok-button">OK</button>
+    </div>
+
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        // Function to show custom message box
+        function showMessageBox(title, content) {
+            document.getElementById('message-title').textContent = title;
+            document.getElementById('message-content').textContent = content;
+            document.getElementById('message-box').classList.add('show');
+            document.getElementById('message-overlay').classList.add('show');
+        }
+
+        // Function to hide custom message box
+        function hideMessageBox() {
+            document.getElementById('message-box').classList.remove('show');
+            document.getElementById('message-overlay').classList.remove('show');
+        }
+
+        document.getElementById('message-ok-button').addEventListener('click', hideMessageBox);
+
+        const paymentCards = document.querySelectorAll('.option-card');
+        const payButton = document.getElementById('pay-button');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        let selectedMethod = null;
+
+        // Add click listeners to payment option cards
+        paymentCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove 'selected' class from all cards
+                paymentCards.forEach(c => c.classList.remove('selected'));
+                // Add 'selected' class to the clicked card
+                card.classList.add('selected');
+                selectedMethod = card.dataset.method;
+                payButton.disabled = false; // Enable pay button
+            });
+        });
+
+        // Handle pay button click
+        payButton.addEventListener('click', () => {
+            if (!selectedMethod) {
+                showMessageBox('Error', 'Please select a payment method.');
+                return;
+            }
+
+            payButton.disabled = true;
+            payButton.classList.add('loading'); // Show loading spinner
+
+            if (selectedMethod === 'cash') {
+                // Simulate Cash on Delivery success
+                setTimeout(() => {
+                    showMessageBox('Order Placed!', 'Your order has been placed successfully. Pay with cash on delivery.');
+                    payButton.disabled = false;
+                    payButton.classList.remove('loading'); // Hide loading spinner
+                }, 1500);
+            } else {
+                // Initiate Razorpay payment for 'gpay' or 'card'
+                initiateRazorpayPayment();
+            }
+        });
+
+        function initiateRazorpayPayment() {
+            // This is a placeholder key. In a real application, you would get this from your backend.
+            // For testing, you can use 'rzp_test_YOUR_KEY_ID' from your Razorpay dashboard.
+            const RAZORPAY_KEY_ID = 'rzp_test_YOUR_KEY_ID'; // Replace with your actual Test Key ID
+
+            // Example order details
+            const orderOptions = {
+                key: RAZORPAY_KEY_ID,
+                amount: 50000, // Amount in paise (e.g., 50000 paise = ₹500.00)
+                currency: 'INR',
+                name: 'Your Hackathon Project',
+                description: 'Payment for your awesome product/service',
+                image: 'https://placehold.co/100x100/4CAF50/ffffff?text=HP', // Placeholder logo updated to green
+                order_id: 'order_xxxxxxxxxxxxxx', // Replace with a dynamically generated order ID from your backend
+                handler: function (response) {
+                    // This function is called when the payment is successful
+                    console.log('Payment Success:', response);
+                    showMessageBox('Payment Successful!', `Payment ID: ${response.razorpay_payment_id}`);
+                    payButton.disabled = false;
+                    payButton.classList.remove('loading'); // Hide loading spinner
+                },
+                prefill: {
+                    name: 'John Doe', // User's name
+                    email: 'john.doe@example.com', // User's email
+                    contact: '9999999999' // User's phone number
+                },
+                notes: {
+                    address: 'Razorpay Corporate Office'
+                },
+                theme: {
+                    color: '#4CAF50' // Primary color for the Razorpay popup updated to green
+                },
+                modal: {
+                    ondismiss: function() {
+                        // This function is called when the payment modal is closed without completing payment
+                        console.log('Payment modal dismissed.');
+                        showMessageBox('Payment Cancelled', 'You have closed the payment window.');
+                        payButton.disabled = false;
+                        payButton.classList.remove('loading'); // Hide loading spinner
+                    }
+                }
+            };
+
+            // Create a new Razorpay instance
+            const rzp = new Razorpay(orderOptions);
+
+            // Open the Razorpay payment modal
+            rzp.open();
+        }
+    </script>
+</body>
+</html>
